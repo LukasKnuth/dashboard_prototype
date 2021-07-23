@@ -23,18 +23,22 @@ defmodule HelloNerves.Application do
 
   # List all child processes to be supervised
   def children(:host) do
+    main_viewport_config = Application.get_env(:hello_nerves, :viewport)
     [
       # Children that only run on the host
       # Starts a worker by calling: HelloNerves.Worker.start_link(arg)
       # {HelloNerves.Worker, arg},
+      {Scenic, viewports: [main_viewport_config]}
     ]
   end
 
   def children(_target) do
+    main_viewport_config = Application.get_env(:hello_nerves, :viewport)
     [
       # Children for all targets except host
       # Starts a worker by calling: HelloNerves.Worker.start_link(arg)
       # {HelloNerves.Worker, arg},
+      {Scenic, viewports: [main_viewport_config]}
     ]
   end
 
