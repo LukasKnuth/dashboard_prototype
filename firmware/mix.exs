@@ -3,7 +3,7 @@ defmodule HelloNerves.MixProject do
 
   @app :hello_nerves
   @version "0.1.0"
-  @all_targets [:rpi, :rpi0, :rpi4, :x86_64]
+  @all_targets [:rpi, :rpi0, :rpi4, :x86_64, :custom_rpi]
 
   def project do
     [
@@ -48,6 +48,7 @@ defmodule HelloNerves.MixProject do
       {:nerves_system_rpi0, "~> 1.13", runtime: false, targets: :rpi0},
       {:nerves_system_rpi4, "~> 1.13", runtime: false, targets: :rpi4},
       {:nerves_system_x86_64, "~> 1.13", runtime: false, targets: :x86_64},
+      {:custom_rpi, path: "../custom_rpi", runtime: false, targets: :custom_rpi, nerves: [compile: true]},
 
       # UI and Touch with Scenic
       {:scenic, "~> 0.10"},
