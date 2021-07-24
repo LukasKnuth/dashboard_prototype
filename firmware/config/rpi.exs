@@ -18,7 +18,7 @@ config :hello_nerves, :viewport, %{
     %{
       module: Scenic.Driver.Nerves.Touch,
       opts: [
-        device: "FT5406 memory based driver", # todo touch no work, this is incorrect. Get debugging via WiFi working and inumerate devices!
+        device: "STMicroelectronics 7H Custom Human interface",
         calibration: {{1, 0, 0}, {1, 0, 0}}
       ]
     }
