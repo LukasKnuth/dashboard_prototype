@@ -7,8 +7,7 @@ config :nerves, :firmware, fwup_conf: "config/rpi/fwup.conf"
 
 config :hello_nerves, :viewport, %{
   name: :main_viewport,
-  # default_scene: {HelloNerves.Scene.Crosshair, nil},
-  default_scene: {HelloNerves.Scene.Crosshair, nil},
+  default_scene: {HelloNerves.Scene.Test, nil},
   size: {1024, 600},
   opts: [scale: 1.0],
   drivers: [
