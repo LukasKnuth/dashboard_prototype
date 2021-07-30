@@ -5,8 +5,8 @@ defmodule HelloNerves.Component.LightSwitch do
   import Scenic.Primitives
 
   @graph Graph.build()
-    |> circle(30, id: :on_indicator, stroke: {2, :yellow}, translate: {20, 20})
-    |> text("[name]", id: :name, text_align: :center, translate: {20, 70})
+         |> circle(30, id: :on_indicator, stroke: {2, :yellow}, translate: {20, 20})
+         |> text("[name]", id: :name, text_align: :center, translate: {20, 70})
 
   @impl true
   def verify(light_name) when is_bitstring(light_name) do
@@ -21,15 +21,12 @@ defmodule HelloNerves.Component.LightSwitch do
   @impl true
   def init(light_name, _opts) do
     :ok = Hue.Monitor.register_light(light_name)
-    {:ok, [], push: @graph}
+    {:ok, nil, push: @graph}
   end
 
   @impl true
-  def handle_info({:hue_update, %Hue.Light{name: name, is_on?: on?}}, state) do
-    graph = @graph
-    |> Graph.modify(:name, &text(&1, name))
-    |> Graph.modify(:on_indicator, &circle(&1, 30, fill: indicator_color(on?)))
-    {:noreply, state, push: graph}
+  def handle_info({:hue_update, light}, _state) do
+    {:noreply, light, push: update_graph(light)}
   end
 
   @impl true
@@ -37,6 +34,31 @@ defmodule HelloNerves.Component.LightSwitch do
     {:noreply, state}
   end
 
-  def indicator_color(true), do: :yellow
-  def indicator_color(false), do: :clear
+  @impl true
+  def handle_input(
+        {:cursor_button, {:left, :release, _, _}},
+        _context,
+        state
+      ) do
+    case Hue.Client.toggle(state) do
+      {:ok, light} ->
+        {:halt, light, push: update_graph(light)}
+
+      {:error, reason} ->
+        IO.puts("Couldn't switch #{inspect(reason)}")
+        {:halt, state}
+    end
+  end
+
+  @impl true
+  def handle_input(_input, _context, state), do: {:cont, state}
+
+  defp update_graph(%Hue.Light{name: name, is_on?: on?}) do
+    @graph
+    |> Graph.modify(:name, &text(&1, name))
+    |> Graph.modify(:on_indicator, &circle(&1, 30, fill: indicator_color(on?)))
+  end
+
+  defp indicator_color(true), do: :yellow
+  defp indicator_color(false), do: :clear
 end
