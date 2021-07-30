@@ -1,13 +1,16 @@
 defmodule HelloNerves.Scene.Test do
   use Scenic.Scene
-  alias Scenic.Graph
+
   import Scenic.Primitives
   import Scenic.Components
+  alias Scenic.Graph
+  alias HelloNerves.Component.LightSwitch
 
   @graph Graph.build()
          |> text("My first scene", id: :txt_hello, font_size: 22, translate: {100, 100})
          |> button("Click me!", id: :btn_invoke, translate: {100, 150})
          |> button("Reset", id: :btn_reset, translate: {100, 200})
+         |> LightSwitch.add_to_graph("Wohnzimmer Decke", translate: {400, 400})
 
   @impl true
   def init(_scene_args, _options) do
