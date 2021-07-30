@@ -6,7 +6,8 @@ defmodule Hue.Monitor do
 
   @registry Hue.Registry
   @monitor __MODULE__
-  @refresh_time 2_000 # 2sec
+  # 2sec
+  @refresh_time 2_000
 
   @impl true
   def init(_opts) do
@@ -18,38 +19,48 @@ defmodule Hue.Monitor do
 
   @impl true
   def handle_info(:refresh, state) do
-    state = state
-    |> Map.update!(:lights, fn lights ->
-      Enum.map(lights, fn light ->
-        case Client.refresh(light) do
-          {:ok, refreshed} ->
-            refreshed
+    state =
+      state
+      |> Map.update!(:lights, fn lights ->
+        Enum.map(lights, fn light ->
+          case Client.refresh(light) do
+            {:ok, refreshed} ->
+              refreshed
 
-          {:error, reason} ->
-            Logger.warning("Couldn't refresh Hue light: #{inspect(light)} -> #{inspect(reason)}")
-            light
-        end
+            {:error, reason} ->
+              Logger.warning(
+                "Couldn't refresh Hue light: #{inspect(light)} -> #{inspect(reason)}"
+              )
+
+              light
+          end
+        end)
       end)
-    end)
-    |> Map.update!(:groups, fn groups ->
-      Enum.map(groups, fn {group, scene} ->
-        case Client.refresh(group) do
-          {:ok, refreshed} ->
-            {refreshed, scene}
+      |> Map.update!(:groups, fn groups ->
+        Enum.map(groups, fn {group, scene} ->
+          case Client.refresh(group) do
+            {:ok, refreshed} ->
+              {refreshed, scene}
 
-          {:error, reason} ->
-            Logger.warning("Couldn't refresh Hue group: #{inspect(group)} -> #{inspect(reason)}")
-            {group, scene}
-        end
+            {:error, reason} ->
+              Logger.warning(
+                "Couldn't refresh Hue group: #{inspect(group)} -> #{inspect(reason)}"
+              )
+
+              {group, scene}
+          end
+        end)
       end)
-    end)
 
-    Enum.each(state.lights, fn light -> # todo optimization: Only do this if light actually changed.
+    # todo optimization: Only do this if light actually changed.
+    Enum.each(state.lights, fn light ->
       Registry.dispatch(@registry, light.id, fn entries ->
         for {pid, _value} <- entries, do: send(pid, {:hue_update, light})
       end)
     end)
-    Enum.each(state.groups, fn {group, _scene} -> # todo optimization: Only do this if light actually changed.
+
+    # todo optimization: Only do this if light actually changed.
+    Enum.each(state.groups, fn {group, _scene} ->
       Registry.dispatch(@registry, group.id, fn entries ->
         for {pid, _value} <- entries, do: send(pid, {:hue_update, group})
       end)
@@ -97,7 +108,8 @@ defmodule Hue.Monitor do
 
   def register_light(name) do
     with {:ok, light} <- GenServer.call(@monitor, {:reg_light, name}) do
-      Registry.register(@registry, light.id, nil) # todo are these id's unique accross bridge?
+      # todo are these id's unique accross bridge?
+      Registry.register(@registry, light.id, nil)
       :ok
     end
   end
