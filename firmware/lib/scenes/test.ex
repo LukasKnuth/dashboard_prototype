@@ -5,9 +5,9 @@ defmodule HelloNerves.Scene.Test do
   import Scenic.Components
 
   @graph Graph.build()
-    |> text("My first scene", id: :txt_hello, font_size: 22, translate: {100, 100})
-    |> button("Click me!", id: :btn_invoke, translate: {100, 150})
-    |> button("Reset", id: :btn_reset, translate: {100, 200})
+         |> text("My first scene", id: :txt_hello, font_size: 22, translate: {100, 100})
+         |> button("Click me!", id: :btn_invoke, translate: {100, 150})
+         |> button("Reset", id: :btn_reset, translate: {100, 200})
 
   @impl true
   def init(_scene_args, _options) do

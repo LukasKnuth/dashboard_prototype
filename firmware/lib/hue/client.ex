@@ -4,8 +4,8 @@ defmodule Hue.Client do
   @bridge_ip "192.168.178.27"
   @user_name "6E8WkUgDB1PTrnaD1nMmdRbLMwWrid49NVsZrHYJ"
 
-  plug Tesla.Middleware.BaseUrl, "http://#{@bridge_ip}/api/#{@user_name}"
-  plug Tesla.Middleware.JSON
+  plug(Tesla.Middleware.BaseUrl, "http://#{@bridge_ip}/api/#{@user_name}")
+  plug(Tesla.Middleware.JSON)
 
   def groups do
     get("/groups")

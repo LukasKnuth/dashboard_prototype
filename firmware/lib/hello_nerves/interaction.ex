@@ -2,7 +2,8 @@ defmodule HelloNerves.Interaction do
   use GenServer
   require Logger
 
-  @name :interaction_server # todo must be {:global, :interaction_server} ??
+  # todo must be {:global, :interaction_server} ??
+  @name :interaction_server
 
   def start_link(_params) do
     GenServer.start_link(__MODULE__, nil, name: @name)

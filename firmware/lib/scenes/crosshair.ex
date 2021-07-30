@@ -43,9 +43,7 @@ defmodule HelloNerves.Scene.Crosshair do
       |> Graph.modify(:pos, fn p ->
         Primitive.put(
           p,
-          "x: #{:erlang.float_to_binary(x * 1.0, decimals: 1)}, y: #{
-            :erlang.float_to_binary(y * 1.0, decimals: 1)
-          }"
+          "x: #{:erlang.float_to_binary(x * 1.0, decimals: 1)}, y: #{:erlang.float_to_binary(y * 1.0, decimals: 1)}"
         )
       end)
 
@@ -68,9 +66,7 @@ defmodule HelloNerves.Scene.Crosshair do
       |> Graph.modify(:pos, fn p ->
         Primitive.put(
           p,
-          "x: #{:erlang.float_to_binary(x * 1.0, decimals: 1)}, y: #{
-            :erlang.float_to_binary(y * 1.0, decimals: 1)
-          }"
+          "x: #{:erlang.float_to_binary(x * 1.0, decimals: 1)}, y: #{:erlang.float_to_binary(y * 1.0, decimals: 1)}"
         )
       end)
 
@@ -94,9 +90,7 @@ defmodule HelloNerves.Scene.Crosshair do
       |> Graph.modify(:pos, fn p ->
         Primitive.put(
           p,
-          "x: #{:erlang.float_to_binary(x * 1.0, decimals: 1)}, y: #{
-            :erlang.float_to_binary(y * 1.0, decimals: 1)
-          }"
+          "x: #{:erlang.float_to_binary(x * 1.0, decimals: 1)}, y: #{:erlang.float_to_binary(y * 1.0, decimals: 1)}"
         )
       end)
 

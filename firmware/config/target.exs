@@ -59,20 +59,19 @@ config :vintage_net,
        ipv4: %{method: :dhcp}
      }},
     {"wlan0",
-      %{
-        type: VintageNetWiFi,
-        vintage_net_wifi: %{
-          networks: [
-            %{
-              key_mgmt: :wpa_psk,
-              ssid: "Gib Interwebzb plx",
-              psk: System.fetch_env!("WIFI_PW")
-            }
-          ]
-        },
-        ipv4: %{method: :dhcp},
-      }
-    }
+     %{
+       type: VintageNetWiFi,
+       vintage_net_wifi: %{
+         networks: [
+           %{
+             key_mgmt: :wpa_psk,
+             ssid: "Gib Interwebzb plx",
+             psk: System.fetch_env!("WIFI_PW")
+           }
+         ]
+       },
+       ipv4: %{method: :dhcp}
+     }}
   ]
 
 config :mdns_lite,

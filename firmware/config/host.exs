@@ -11,7 +11,7 @@ config :hello_nerves, :viewport, %{
     %{
       module: Scenic.Driver.Glfw,
       name: :glfw,
-      opts: [resizeable: false, title: "Dashboard (host)"],
+      opts: [resizeable: false, title: "Dashboard (host)"]
     }
   ]
 }

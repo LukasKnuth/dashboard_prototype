@@ -32,7 +32,7 @@ config :tesla, adapter: Tesla.Adapter.Hackney
 # Import UI config from Phoenix project
 import_config "../../hello_ui/config/config.exs"
 # Uncomment if we _also_ want to import (and override) the production config.
-#import_config "../../hello_ui/config/prod.exs"
+# import_config "../../hello_ui/config/prod.exs"
 
 config :hello_ui, HelloUiWeb.Endpoint,
   # Nerves root filesystem is read-only, so disable the code reloader
