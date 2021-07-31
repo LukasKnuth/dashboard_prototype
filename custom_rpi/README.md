@@ -1,3 +1,7 @@
+## Changes
+
+This custom Nerves system is based on `nerves_system_rpi` but adds additional kernel modules to support my specific Touchscreen. Only the `linux-5.4.defconfig` file has been changed using the "Modify a system" helpers, chroot build and menuconfig for the Linux kernel.
+
 # Raspberry Pi Model A+, B, and B+
 
 [![CircleCI](https://circleci.com/gh/nerves-project/nerves_system_rpi.svg?style=svg)](https://circleci.com/gh/nerves-project/nerves_system_rpi)
