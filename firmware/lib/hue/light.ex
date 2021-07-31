@@ -3,11 +3,12 @@ defmodule Hue.Light do
   A single light.
   """
 
-  defstruct [:id, :name, :is_on?, :brightness]
+  defstruct [:id, :uid, :name, :is_on?, :brightness]
 
   def from_response(id, info) do
     %__MODULE__{
       id: id,
+      uid: info["uniqueid"],
       name: info["name"],
       is_on?: info["state"]["on"],
       brightness: info["state"]["bri"]

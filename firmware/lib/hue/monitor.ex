@@ -54,14 +54,14 @@ defmodule Hue.Monitor do
 
     # todo optimization: Only do this if light actually changed.
     Enum.each(state.lights, fn light ->
-      Registry.dispatch(@registry, light.id, fn entries ->
+      Registry.dispatch(@registry, light.uid, fn entries ->
         for {pid, _value} <- entries, do: send(pid, {:hue_update, light})
       end)
     end)
 
     # todo optimization: Only do this if light actually changed.
     Enum.each(state.groups, fn {group, _scene} ->
-      Registry.dispatch(@registry, group.id, fn entries ->
+      Registry.dispatch(@registry, group.uid, fn entries ->
         for {pid, _value} <- entries, do: send(pid, {:hue_update, group})
       end)
     end)
@@ -108,15 +108,14 @@ defmodule Hue.Monitor do
 
   def register_light(name) do
     with {:ok, light} <- GenServer.call(@monitor, {:reg_light, name}) do
-      # todo are these id's unique accross bridge?
-      Registry.register(@registry, light.id, nil)
+      Registry.register(@registry, light.uid, nil)
       :ok
     end
   end
 
   def register_group(name) do
     with {:ok, group} <- GenServer.call(@monitor, {:reg_group, name}) do
-      Registry.register(@registry, group.id, nil)
+      Registry.register(@registry, group.uid, nil)
       :ok
     end
   end
