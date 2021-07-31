@@ -12,7 +12,27 @@ defmodule Hue.Monitor do
   @impl true
   def init(_opts) do
     schedule_refresh()
-    {:ok, %{lights: [], groups: []}}
+    state =
+      %{lights: [], groups: []}
+      |> reload_from_registry()
+    {:ok, state}
+  end
+
+  @doc "If the monitor crashes, the registry remains. Query it to find previously registered lights/groups"
+  defp reload_from_registry(state) do
+    Hue.Registry
+    |> Registry.select([{{:_, :_, :"$1"}, [], [:"$1"]}])
+    |> MapSet.new()
+    |> Enum.reduce(state, fn
+      {:light, id}, acc ->
+        {:ok, %{body: body}} = Hue.Client.light(id)
+        light = Light.from_response(id, body)
+        Map.update!(acc, :lights, &([light | &1]))
+      {:group, id}, acc -> Hue.Client.group(id)
+        {:ok, %{body: body}} = Hue.Client.group(id)
+        group = Group.from_response(id, body)
+        Map.update!(acc, :groups, &([group | &1]))
+    end)
   end
 
   # todo how to handle a process de-registering because crash -> Don't refresh that light/group anymore.
@@ -108,14 +128,15 @@ defmodule Hue.Monitor do
 
   def register_light(name) do
     with {:ok, light} <- GenServer.call(@monitor, {:reg_light, name}) do
-      Registry.register(@registry, light.uid, nil)
+      Registry.register(@registry, light.uid, {:light, light.id})
       :ok
     end
   end
 
   def register_group(name) do
     with {:ok, group} <- GenServer.call(@monitor, {:reg_group, name}) do
-      Registry.register(@registry, group.uid, nil)
+      # todo this "forgets" about the scene!
+      Registry.register(@registry, group.uid, {:group, group.id})
       :ok
     end
   end

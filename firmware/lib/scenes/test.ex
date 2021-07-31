@@ -10,7 +10,11 @@ defmodule HelloNerves.Scene.Test do
          |> text("My first scene", id: :txt_hello, font_size: 22, translate: {100, 100})
          |> button("Click me!", id: :btn_invoke, translate: {100, 150})
          |> button("Reset", id: :btn_reset, translate: {100, 200})
-         |> LightSwitch.add_to_graph("Wohnzimmer Decke", translate: {400, 400})
+         |> LightSwitch.add_to_graph("Wohnzimmer Decke", translate: {100, 300})
+         |> LightSwitch.add_to_graph("Wohnzimmer Decke", translate: {100, 450})
+         |> LightSwitch.add_to_graph("Pegboard Hintergrund", translate: {350, 300})
+         |> LightSwitch.add_to_graph("Haupt Monitor Backlight", translate: {600, 300})
+         |> LightSwitch.add_to_graph("2nd Monitor Backlight", translate: {850, 300})
 
   @impl true
   def init(_scene_args, _options) do
